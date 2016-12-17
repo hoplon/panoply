@@ -33,7 +33,7 @@
    (watch)
    (speak :theme "woodblock")
    (hoplon)
-   (reload)
+   (reload :on-jsload 'hoplon.app-pages._index_DOT_html/load!)
    (cljs)
    (web :serve 'panoply.backend.handler-dev/app)
    (serve :port (or port 8000))))

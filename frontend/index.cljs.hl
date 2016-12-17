@@ -11,9 +11,11 @@
 (def get-state
   (mkremote 'panoply.backend.api/get-state state error loading))
 
-(with-init!
-  (get-state)
-  #_(js/setInterval get-state 1000))
+(defn load!
+  []
+  (get-state))
+
+(with-init! (load!))
 
 (html
   (head
