@@ -8,8 +8,8 @@
             ;; Frontend
             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
             [org.clojure/tools.reader  "1.0.0-alpha1"]
-            [org.clojure/clojurescript "1.7.228"]
-            [hoplon                    "6.0.0-alpha17"]
+            [org.clojure/clojurescript "1.9.293"]
+            [hoplon/ui                 "0.1.0-SNAPSHOT"]
             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
             ;; Dev-time only frontend
             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -21,7 +21,7 @@
             ;; Backend
             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
             [org.clojure/clojure       "1.8.0"]
-            [hoplon/castra             "3.0.0-alpha5"
+            [hoplon/castra             "3.0.0-alpha6"
              :exclusions [ring/* commons-codec]]
             [ring/ring-defaults        "0.2.1"
              :exclusions [javax.servlet/servlet-api]]
@@ -55,7 +55,7 @@
    (watch)
    (speak :theme "woodblock")
    (hoplon)
-   (reload :on-jsload 'panoply.frontend.rpc/init)
+   (reload)
    (cljs)
    (web :serve 'panoply.backend.handler-dev/app)
    (serve :port 8000)))
