@@ -1,0 +1,24 @@
+(page "index.html"
+  (:require [castra.core :refer [mkremote]]))
+
+(defc state nil)
+(defc error nil)
+(defc loading [])
+
+(defc= random-number  (get state :random))
+(defc= session-number (get state :session))
+
+(def get-state
+  (mkremote 'panoply.backend.api/get-state state error loading))
+
+(with-init!
+  (get-state)
+  #_(js/setInterval get-state 1000))
+
+(html
+  (head
+    (title "Panoply"))
+  (body
+    (h1 "Panoply")
+    (p (text state))
+    (button :click #(get-state) "Get State")))
