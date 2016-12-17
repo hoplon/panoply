@@ -1,26 +1,18 @@
 (page "index.html"
-  (:require [castra.core :refer [mkremote]]))
+  (:require
+   [panoply.frontend.rpc :as rpc :refer [user]]))
 
-(defc state nil)
-(defc error nil)
-(defc loading [])
-
-(defc= random-number  (get state :random))
-(defc= session-number (get state :session))
-
-(def get-state
-  (mkremote 'panoply.backend.api/get-state state error loading))
-
-(defn load!
-  []
-  (get-state))
-
-(with-init! (load!))
+(with-init! (rpc/init))
 
 (html
   (head
     (title "Panoply"))
   (body
     (h1 "Panoply")
-    (p (text state))
-    (button :click #(get-state) "Get State")))
+    (p
+      (if-tpl user
+        (span (text "Logged in as ~(:login user)"))
+        (a :href "#" :click rpc/login! "Log in with GitHub")))
+    (p
+      (if-tpl user
+        (a :href "#" :click rpc/logout! "Log out")))))
