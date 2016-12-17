@@ -1,8 +1,6 @@
 # panoply
 
-> pan·o·ply
-> historical/literary
-> a complete set of arms or suit of armor
+> pan·o·ply (historical/literary): a complete set of arms or suit of armor
 
 This is an example of a full-stack [Hoplon][hoplon] application. It represents
 the way that we think SPAs should be developed and deployed.
