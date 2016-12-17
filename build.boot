@@ -20,8 +20,6 @@
             [tailrecursion/boot-jetty "0.1.3" :scope "test"]
             [ring/ring-devel "1.5.0" :scope "test"]])
 
-(require '[adzerk.boot-cljs :refer [cljs]])
-
 (require
  '[adzerk.boot-cljs         :refer [cljs]]
  '[adzerk.boot-reload       :refer [reload]]
@@ -38,6 +36,5 @@
    (reload)
    (cljs)
    (web :serve 'panoply.backend.handler-dev/app)
-   (repl :server true)
    (serve :port (or port 8000))))
 

@@ -8,7 +8,9 @@
    [ring.middleware.resource       :refer [wrap-resource]]
    [ring.middleware.session        :refer [wrap-session]]
    [ring.middleware.session.cookie :refer [cookie-store]]
-   [ring.util.response             :refer [content-type resource-response]]))
+   [ring.util.response             :refer [content-type resource-response]]
+   ;; For wrap-reload to know about
+   [panoply.backend.api]))
 
 (defroutes app-routes
   (GET "/" req

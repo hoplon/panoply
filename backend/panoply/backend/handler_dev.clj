@@ -11,4 +11,4 @@
 
 (def app
   (-> #'handler/app
-      (wrap-reload :dirs src-dirs)))
+      (wrap-reload {:dirs src-dirs})))
