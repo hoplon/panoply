@@ -31,6 +31,7 @@
              :exclusions [com.fasterxml.jackson.core/jackson-core]]
             [clj-http                  "2.0.0"
              :exclusions [riddley commons-io commons-codec]]
+            [org.clojure/data.avl "0.0.17"]
             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
             ;; Dev-time only backend
             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -54,7 +55,6 @@
 (deftask env
   "Load a Java properties file from disk."
   [f file FILE str "Path on disk (NOT fileset) to Java properties file to load"]
-  (println file)
   (with-pass-thru _
     (let [env-file (io/file file)]
       (if-not (.exists env-file)
