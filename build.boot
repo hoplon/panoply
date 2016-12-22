@@ -54,7 +54,6 @@
 (deftask env
   "Load a Java properties file from disk."
   [f file FILE str "Path on disk (NOT fileset) to Java properties file to load"]
-  (println file)
   (with-pass-thru _
     (let [env-file (io/file file)]
       (if-not (.exists env-file)
