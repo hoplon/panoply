@@ -21,7 +21,7 @@
             ;; Backend
             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
             [org.clojure/clojure       "1.8.0"]
-            [hoplon/castra             "3.0.0-alpha6"
+            [hoplon/castra             "3.0.0-alpha7"
              :exclusions [ring/* commons-codec]]
             [ring/ring-defaults        "0.2.1"
              :exclusions [javax.servlet/servlet-api]]
