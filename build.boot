@@ -9,7 +9,8 @@
             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
             [org.clojure/tools.reader  "1.0.0-alpha1"]
             [org.clojure/clojurescript "1.9.293"]
-            [hoplon/ui                 "0.1.0-SNAPSHOT"]
+            [hoplon/ui                 "0.1.0-SNAPSHOT"
+             :exclusions [cljsjs/jquery]]
             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
             ;; Dev-time only frontend
             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -45,13 +46,29 @@
 (require
  '[adzerk.boot-cljs         :refer [cljs]]
  '[adzerk.boot-reload       :refer [reload]]
+ '[boot.util                :as util]
+ '[clojure.java.io          :as io]
  '[hoplon.boot-hoplon       :refer [hoplon]]
  '[tailrecursion.boot-jetty :refer [serve]])
+
+(deftask env
+  "Load a Java properties file from disk."
+  [f file FILE str "Path on disk (NOT fileset) to Java properties file to load"]
+  (println file)
+  (with-pass-thru _
+    (let [env-file (io/file file)]
+      (if-not (.exists env-file)
+        (util/fail "env: file \"%s\" doesn't exist\n" file)
+        (with-open [rdr (io/reader file)]
+          (util/info "env: loading \"%s\"\n" file)
+          (doseq [[k v] (doto (java.util.Properties.) (.load rdr))]
+            (System/setProperty k v)))))))
 
 (deftask dev
   "Build panoply for local development."
   []
   (comp
+   (env :file "local.env")
    (watch)
    (speak :theme "woodblock")
    (hoplon)

@@ -10,7 +10,6 @@ OAuth and todos are persisted on the backend.
 
 ## Development
 
-    source local.env
     boot dev
     
 Then, visit [http://localhost:8000](http://localhost:8000/) in your browser.
