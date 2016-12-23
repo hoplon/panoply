@@ -1,26 +1,27 @@
 (ns panoply.backend.github
   (:require
-   [adzerk.env      :as env]
-   [clj-http.client :as http]
-   [cheshire.core   :as json]))
+    [clj-http.client        :as http]
+    [ring.middleware.params :refer [params-request]]
+    [cheshire.core          :refer [parse-string]]))
 
-(env/def
-  PANOPLY_GH_BASIC_CLIENT_ID :required
-  PANOPLY_GH_BASIC_SECRET_ID :required)
+(defn- mkrpc [verb url & keys]
+  (let [config {:accept :json :content-type :json}
+        params (if (= verb http/get) :query-params :form-params)
+        call   #(->> (zipmap keys %) (assoc config params) (verb url))
+        error  #(if (:error %) (throw (ex-info (:error_description %) %)) %)]
+    (fn [& args]
+      (future (-> (call args) :body (parse-string true) error)))))
 
-(defn get-access-token [session-code]
-  (some-> (http/post "https://github.com/login/oauth/access_token"
-                     {:form-params {:client_id PANOPLY_GH_BASIC_CLIENT_ID
-                                    :client_secret PANOPLY_GH_BASIC_SECRET_ID
-                                    :code session-code}
-                      :headers {"accept" "application/json"}})
-          :body
-          (json/parse-string true)
-          :access_token))
+(def get-token (mkrpc http/post "https://github.com/login/oauth/access_token" :code :client_id :client_secret))
+(def get-user  (mkrpc http/get  "https://api.github.com/user"))
 
-(defn get-user [token]
-  (some->
-   (http/get "https://api.github.com/user"
-             {:query-params {"access_token" token}})
-   :body
-   (json/parse-string true)))
+(defn wrap-token [handle callback-uri client-id secret-id]
+  "handle the oath callback to set a github token on the castra session. must be
+   placed after the wrap-castra-session and before the wrap-castra middlewares."
+  (fn [req]
+    (if-let [token (and (= (:uri req) callback-uri)
+                        (some-> (params-request req)
+                                (get-in [:params "code"])
+                                (get-token client-id secret-id)))]
+      (assoc-in (handle req) [:session "token"] (:access_token @token))
+      (handle req))))

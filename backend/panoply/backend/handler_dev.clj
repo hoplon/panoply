@@ -9,6 +9,6 @@
   (filter #(not (.endsWith % ".jar"))
           (.split (System/getProperty "fake.class.path") ":")))
 
-(def app
-  (-> #'handler/app
+(def serve
+(-> #'handler/serve
       (wrap-reload {:dirs src-dirs})))
