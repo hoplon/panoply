@@ -30,8 +30,7 @@
                     [compojure                 "1.5.1"]
                     [cheshire                  "5.5.0"
                      :exclusions [com.fasterxml.jackson.core/jackson-core]]
-                    [clj-http                  "2.0.0"
-                     :exclusions [riddley commons-io commons-codec]]
+                    [http-kit                  "2.0.0"]
                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                     ;; Dev-time only backend
                     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
